@@ -105,10 +105,16 @@ def build_embeddings():
         )
 
     # default: dedicated Persian SOTA embedding, local & offline
-    from langchain_community.embeddings import HuggingFaceEmbeddings
+    try:
+        from langchain_huggingface import HuggingFaceEmbeddings
+    except ImportError:  # older split of the package
+        from langchain_community.embeddings import HuggingFaceEmbeddings  # type: ignore
 
     log.info("Using Persian embeddings: %s", config.PERSIAN_EMBEDDING_MODEL)
-    return HuggingFaceEmbeddings(model_name=config.PERSIAN_EMBEDDING_MODEL)
+    return HuggingFaceEmbeddings(
+        model_name=config.PERSIAN_EMBEDDING_MODEL,
+        encode_kwargs={"normalize_embeddings": True},
+    )
 
 
 class MiniHashingEmbeddings:
@@ -181,8 +187,14 @@ class PolicyRetriever:
 
         # Hybrid retrieval: dense vectors + BM25 sparse keyword matching.
         try:
-            from langchain_community.retrievers import BM25Retriever
-            from langchain.retrievers import EnsembleRetriever
+            try:
+                from langchain_classic.retrievers import (
+                    BM25Retriever,
+                    EnsembleRetriever,
+                )
+            except ImportError:  # older monolithic langchain-community
+                from langchain_community.retrievers import BM25Retriever  # type: ignore
+                from langchain_classic.retrievers import EnsembleRetriever  # type: ignore
 
             bm25 = BM25Retriever.from_documents(docs, k=config.RAG_TOP_K)
             self.retriever = EnsembleRetriever(

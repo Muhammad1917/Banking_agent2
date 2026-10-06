@@ -1,0 +1,26 @@
+# --- Core agent stack (latest LangChain v1 / LangGraph v1) ---
+langchain>=1.0
+langgraph>=1.0
+langchain-openai>=1.0          # gpt-4o via OpenAI API / gap-gpt gateway
+langchain-classic>=1.0         # EnsembleRetriever / BM25Retriever (classic modules)
+langchain-huggingface>=1.0     # HuggingFaceEmbeddings (Persian embedding model)
+openai>=1.60
+
+# --- Persian embeddings (local, free, strong for Farsi retrieval) ---
+sentence-transformers>=3.0
+# model downloaded automatically on first run: csebuetnlp/mMTEB_large_fa
+
+# --- Hybrid retrieval ---
+rank-bm25>=0.2.2
+
+# --- Data access ---
+pandas>=2.0
+openpyxl>=3.1                  # reading .xlsx files
+python-docx>=1.1               # reading the policy .docx
+
+# --- Jalali calendar ---
+jalaali-python>=1.0
+
+# --- Config & UI ---
+python-dotenv>=1.0
+streamlit>=1.40                # only needed for app_ui.py
