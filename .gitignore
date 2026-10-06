@@ -1,0 +1,5 @@
+# Compiled and build artifacts
+__pycache__/
+*.pyc
+
+# Data files (if generated or large, but xlsx are usually tracked; however, __pycache__ is definitely ignored)
